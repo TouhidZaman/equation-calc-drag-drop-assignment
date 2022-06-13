@@ -1,25 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import useAlphabets from "./hooks/useAlphabets";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [alphabets] = useAlphabets(); // getting alphabets using custom hook
+    return (
+        <div className="App">
+            <div className="alphabets-container">
+                {alphabets.map((alphabet) => (
+                    <div key={alphabet._id} draggable className="alphabet">
+                        {alphabet.alphabet}
+                    </div>
+                ))}
+            </div>
+            <div className="operators-container">
+                <div className="operators-box">
+                    <div className="operator">+</div>
+                    <div className="operator">-</div>
+                    <div className="operator">*</div>
+                    <div className="operator">/</div>
+                </div>
+                <div className="operators-box">
+                    <div className="operator">{"<"}</div>
+                    <div className="operator">{">"}</div>
+                </div>
+                <div className="operators-box">
+                    <div className="operator">RSH Integer</div>
+                </div>
+            </div>
+            <div className="expression-container"></div>
+            <button id="calculate-button">Evaluate Expression</button>
+        </div>
+    );
 }
 
 export default App;

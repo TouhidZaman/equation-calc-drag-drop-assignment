@@ -1,0 +1,27 @@
+[
+    {
+        "_id": 1,
+        "alphabet": "A",
+        "value": 5
+    },
+    {
+        "_id": 2,
+        "alphabet": "B",
+        "value": 7
+    },
+    {
+        "_id": 3,
+        "alphabet": "C",
+        "value": 10
+    },
+    {
+        "_id": 4,
+        "alphabet": "D",
+        "value": 13
+    },
+    {
+        "_id": 5,
+        "alphabet": "E",
+        "value": 15
+    }
+]
