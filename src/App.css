@@ -2,13 +2,16 @@
     background-color: #eee;
 }
 .alphabets-container,
-.operators-container {
+.operators-container,
+.expression-container {
     display: flex;
     background-color: white;
     /* margin-bottom: 20px; */
     overflow-x: scroll;
+    align-items: center;
 }
-.alphabets-container .alphabet {
+.alphabet,
+.rsh-integer {
     height: 100px;
     width: 110px;
     background-color: lightgreen;
@@ -18,17 +21,28 @@
     align-items: center;
     margin: 10px;
     font-weight: 700;
+    cursor: all-scroll;
 }
 
-.operators-container .operators-box {
+.rsh-integer {
+    background-color:coral;
+}
+
+.operators-box {
     display: flex;
     margin-right: 50px;
 }
+.operators-box {
+    cursor: pointer;
+}
+.operators-box:first-child {
+    cursor: all-scroll;
+}
 
-.operators-container .operator {
+.operator {
     height: 50px;
     width: 110px;
-    background-color:plum;
+    background-color: plum;
     color: black;
     display: flex;
     justify-content: center;
