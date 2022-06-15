@@ -4,10 +4,10 @@ import useAlphabets from "./hooks/useAlphabets";
 
 function App() {
     const operators = [
-        { _id: 100, operator: "+" },
-        { _id: 101, operator: "-" },
-        { _id: 102, operator: "*" },
-        { _id: 103, operator: "/" },
+        { _id: 100, operator: "+", value: "+" },
+        { _id: 101, operator: "-", value: "-" },
+        { _id: 102, operator: "*", value: "*" },
+        { _id: 103, operator: "/", value: "/" },
     ];
 
     const [alphabets] = useAlphabets(); // getting alphabets using custom hook
@@ -21,33 +21,49 @@ function App() {
 
     // To handle RSH Integer Input
     const handlerRSH = () => {
-        // alert("Allah");
         const rshInteger = window.prompt("What should be the RSH Integer?");
         setRSH(rshInteger);
     };
 
-    // Drag and Drop will not work without this.
+    // Drag and Drop will not work without this (Preventing default behavior).
     const handleDragOver = (e) => {
         e.preventDefault();
     };
 
-    // onDragStart we setDragData.
+    // onDragStart we setDragData and get the current drag data.
     // useState instead of e.dataTransfer so we can transfer more data
-    const handleDragStart = (e, _id, item, type) => {
-        setDragData({ _id, item, type });
+    const handleDragStart = (e, item, value, type) => {
+        setDragData({ id: droppedData.length + 1, item, value, type });
     };
 
+    //Inserting Items to droppedData based on onDrop event
     const handleDrop = (e) => {
-        const selected = dragData._id;
-        const item = dragData.item;
         const data = [...droppedData, dragData];
         setDroppedData(data);
-        console.log(selected, item);
     };
 
+    //To Remove Dropped item
+    const removeDroppedItemHandler = (itemId) => {
+        const remainingDroppedItems = droppedData.filter((data) => data.id !== itemId);
+        setDroppedData(remainingDroppedItems);
+    };
+
+    //To handle expression evaluation
     const handleEvaluate = () => {
-        alert("Evaluating")
-    }
+        const rowData = droppedData.map((data) => data.value);
+        rowData.push(action);
+        rowData.push(rsh);
+        const expression = rowData.join(" ");
+        console.log(expression);
+        try {
+            // eslint-disable-next-line
+            const result = eval(expression);
+            console.log(result);
+            alert(result);
+        } catch (error) {
+            alert("This is not a valid equation");
+        }
+    };
 
     return (
         <div className="App">
@@ -60,8 +76,9 @@ function App() {
                         onDragStart={(e) =>
                             handleDragStart(
                                 e,
-                                alphabet._id,
+                                // alphabet._id,
                                 alphabet.alphabet,
+                                alphabet.value,
                                 "alphabet"
                             )
                         }
@@ -70,6 +87,7 @@ function App() {
                     </div>
                 ))}
             </div>
+            
             {/* operator section  */}
             <div className="operators-container">
                 <div className="operators-box">
@@ -80,8 +98,9 @@ function App() {
                             onDragStart={(e) =>
                                 handleDragStart(
                                     e,
-                                    operator._id,
+                                    // operator._id,
                                     operator.operator,
+                                    operator.value,
                                     "operator"
                                 )
                             }
@@ -113,14 +132,36 @@ function App() {
                 className="expression-container"
             >
                 {droppedData.map((data) => (
-                    <div key={data._id} className={`${data.type}`}>
+                    <div key={data.id} className={`item ${data.type}`}>
                         {data.item}
+                        <button
+                            onClick={() => removeDroppedItemHandler(data.id)}
+                            className="btn-delete"
+                        >
+                            X
+                        </button>
                     </div>
                 ))}
-                {action && <div className={`operator`}>{action}</div>}
-                {rsh && <div className={`rsh-integer`}>{rsh}</div>}
+                {action && (
+                    <div className={`item operator`}>
+                        {action}
+                        <button onClick={() => setAction(null)} className="btn-delete">
+                            X
+                        </button>
+                    </div>
+                )}
+                {rsh && (
+                    <div className={`item rsh-integer`}>
+                        {rsh}
+                        <button onClick={() => setRSH(null)} className="btn-delete">
+                            X
+                        </button>
+                    </div>
+                )}
             </div>
-            <button onClick={handleEvaluate} id="calculate-button">Evaluate Expression</button>
+            <button onClick={handleEvaluate} id="calculate-button">
+                Evaluate Expression
+            </button>
         </div>
     );
 }
