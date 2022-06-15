@@ -50,6 +50,8 @@
     align-items: center;
     margin: 10px;
     font-weight: 700;
+    flex-shrink: 0;
+
 }
 
 .expression-container {
