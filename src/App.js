@@ -1,5 +1,7 @@
 import { useRef, useState } from "react";
 import "./App.css";
+import Footer from "./components/Footer/Footer";
+import Spinner from "./components/UI/Spinner/Spinner";
 import useAlphabets from "./hooks/useAlphabets";
 
 function App() {
@@ -10,7 +12,7 @@ function App() {
         { _id: 103, operator: "/", value: "/" },
     ];
 
-    const [alphabets] = useAlphabets(); // getting alphabets using custom hook
+    const [alphabets, loading] = useAlphabets(); // getting alphabets using custom hook
 
     // Data about a things id, origin, and destination
     const [dragData, setDragData] = useState({});
@@ -78,6 +80,11 @@ function App() {
             alert("This is not a valid equation");
         }
     };
+
+    //Handling Loading state
+    if (loading) {
+        return <Spinner />;
+    }
 
     return (
         <div className="App">
@@ -181,6 +188,7 @@ function App() {
             <button onClick={handleEvaluate} id="calculate-button">
                 Evaluate Expression
             </button>
+            <Footer />
         </div>
     );
 }
